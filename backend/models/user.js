@@ -13,6 +13,10 @@ const userModel = (sequelize) => {
           allowNull: false,
           unique: true,
         },
+        password: {
+          type :DataTypes.STRING,
+          allowNull: false,
+        },
         role: {
           type: DataTypes.ENUM('Employee', 'HRAdmin'), 
           allowNull: false,

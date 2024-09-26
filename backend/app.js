@@ -56,12 +56,18 @@ sequelize.authenticate()
     
     
 const departmentRoutes = require('./routes/departmentRoute'); 
+const userRoutes = require('./routes/userRoute');
 
  // Routes 
- app.use('/department', (req, res, next) => {
+ app.use((req, res, next) => {
     req.Department = Department; 
+    req.User = User;
     next();
   }, departmentRoutes);
+  app.use('/department', departmentRoutes); ;
+
+  app.use('/user', userRoutes);
+ 
 app.listen(process.env.PORT,()=>{
     console.log('listening on port '+process.env.PORT);
 })
