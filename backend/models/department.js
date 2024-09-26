@@ -10,6 +10,8 @@ const departmentModel = (sequelize) => {
     },
   });
 
+  
+
   return Department;
 };
 

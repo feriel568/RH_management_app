@@ -31,9 +31,21 @@ sequelize.authenticate()
    
     
     const defineDepartmentModel = require('./models/department');
+    const defineUserModel = require('./models/user');
     const Department = defineDepartmentModel(sequelize);
+    const User = defineUserModel(sequelize);
     
-   
+    Department.hasMany(User, {
+      as: 'users', 
+      foreignKey: 'departmentId', 
+    });
+    
+  
+    User.belongsTo(Department, {
+      as: 'department', 
+      foreignKey: 'departmentId', 
+    });
+    
     sequelize.sync()
       .then(() => {
         console.log('Database synced successfully.');
