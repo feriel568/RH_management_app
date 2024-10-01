@@ -1,0 +1,35 @@
+
+
+  .ant-layout-sider {
+    background-color: #2b2d42; 
+    border-radius: 0 20px 20px 0; 
+  }
+  
+  
+  .ant-menu-item {
+    border-radius: 10px; 
+    transition: background-color 0.3s ease; 
+    margin-bottom: 10px; 
+  }
+  
+  
+  .ant-menu-item:hover {
+    background-color: #d90429 !important; 
+    color: #edf2f4 !important; 
+  }
+  
+  
+  .ant-menu-item-selected {
+    background-color: #D90429 !important; 
+    color: #EDF2F4 !important; 
+  }
+  
+  .ant-layout-content {
+    background-color: #edf2f4; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    padding: 24px;
+   
+  }
+  
+  

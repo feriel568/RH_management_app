@@ -1,27 +1,29 @@
-import React from "react";
+import React , {useState} from "react";
 import { Form, Input, Button } from "antd";
-import "antd/dist/reset.css"; // Use the reset.css in v5
+import "antd/dist/reset.css"; 
 import "../styles/loginForm.css"; 
-// We'll define custom styles here
+
 import TopBar from "./TopBar";
 
 const  LoginForm = () => {
-  const onFinish = (values) => {
-    console.log("Form values: ", values);
-  };
+
+
+  const [email , setEmail] = useState("")
+  const [password , setPassword] = useState("")
+
+
 
   return (
     <div className="login-container">
-      {/* Top Bar with Logo and Name */}
+     
    <TopBar />
 
-      {/* Login Form */}
       <div className="form-wrapper">
         <h2 className="login-title">Login</h2>
         <Form
           name="login"
           layout="vertical"
-          onFinish={onFinish}
+         
           style={{ maxWidth: "300px", margin: "0 auto" }}
         >
           <Form.Item
