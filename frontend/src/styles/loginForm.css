@@ -1,4 +1,3 @@
-/* App.css */
 
 body {
     background-color: #EDF2F4; 
@@ -63,22 +62,22 @@ body {
   
   .login-title {
     text-align: center;
-    color: #2B2D42; /* Dark Text */
+    color: #2B2D42; 
     margin-bottom: 20px;
     font-size: 28px;
   }
   
-  /* Button Colors */
+ 
   .ant-btn-primary {
     background-color: #D90429;
     border-color: #D90429;
   }
   
   .ant-input {
-    color: #2B2D42; /* Dark Text */
+    color: #2B2D42; 
   }
   
   .ant-input-password-icon {
-    color: #8D99AE; /* Placeholder icon color */
+    color: #8D99AE; 
   }
   

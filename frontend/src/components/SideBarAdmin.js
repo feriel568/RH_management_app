@@ -1,13 +1,15 @@
 import React from "react";
 import { Layout, Menu } from "antd";
+import { NavLink } from "react-router-dom";
 import {
   UserOutlined,
   TeamOutlined,
   FileOutlined,
   PieChartOutlined,
   LogoutOutlined,
+  ApartmentOutlined
 } from "@ant-design/icons";
-import "antd/dist/reset.css"; // Ant Design v5 CSS reset
+import "antd/dist/reset.css"; 
 import '../styles/sideBarAdmin.css'
 
 const { Sider, Content } = Layout;
@@ -42,20 +44,31 @@ function SideBarAdmin() {
           }}
         >
           <Menu.Item key="1" icon={<PieChartOutlined />} style={menuItemStyle}>
-            Dashboard
-          </Menu.Item>
-          <Menu.Item key="2" icon={<UserOutlined />} style={menuItemStyle}>
-            Employees
-          </Menu.Item>
-          <Menu.Item key="3" icon={<TeamOutlined />} style={menuItemStyle}>
-            Teams
-          </Menu.Item>
-          <Menu.Item key="4" icon={<FileOutlined />} style={menuItemStyle}>
-            Reports
-          </Menu.Item>
-          <Menu.Item key="5" icon={<LogoutOutlined />} style={menuItemStyle}>
-            Logout
-          </Menu.Item>
+      <NavLink to="/dashAdmin">Dashboard</NavLink>
+    </Menu.Item>
+
+    <Menu.Item key="2" icon={<ApartmentOutlined />} style={menuItemStyle}>
+      <NavLink to="/departments">Departments</NavLink>
+    </Menu.Item>
+    
+    <Menu.Item key="3" icon={<UserOutlined />} style={menuItemStyle}>
+      <NavLink to="/employee/list">Employees</NavLink>
+    </Menu.Item>
+    
+    <Menu.Item key="4" icon={<TeamOutlined />} style={menuItemStyle}>
+     Holidays
+    </Menu.Item>
+    
+    <Menu.Item key="5" icon={<FileOutlined />} style={menuItemStyle}>
+    Reports
+    </Menu.Item>
+    
+    {/* New Department Menu Item */}
+    
+    
+    <Menu.Item key="5" icon={<LogoutOutlined />} style={menuItemStyle}>
+      Logout
+    </Menu.Item>
         </Menu>
       </Sider>
 
