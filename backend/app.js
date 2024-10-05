@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const mysql = require('mysql');
+const cors = require('cors');
 
 const {Sequelize , DataTypes } = require('sequelize');
 
@@ -10,6 +11,7 @@ const {Sequelize , DataTypes } = require('sequelize');
 
 dotenv.config()
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

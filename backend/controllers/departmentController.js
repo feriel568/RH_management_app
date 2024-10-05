@@ -2,6 +2,7 @@ const Department = require('../models/department.js')
 
 const createDepartment = async (req, res) => {
   try {
+    console.log('Received request to create department:', req.body);
     const { name } = req.body;
 
     const newDepartment = await req.Department.create({
@@ -23,20 +24,21 @@ const createDepartment = async (req, res) => {
 
 
 const getAllDepartments = async (req, res) => {
-  try{
+  try {
     const departments = await req.Department.findAll();
     res.status(200).json({
       message: 'Departments retrieved successfully',
-      departments: departments
+      departments: departments,
     });
   } catch (error) {
-    console.log('Failed to retrieve departments:', error);
+    console.error('Failed to retrieve departments:', error); 
     res.status(500).json({
-      message: 'Error retrieving departments:', error,
-      error: error.message,
+      message: 'Error retrieving departments', 
+      error: error.message, 
     });
   }
-}
+};
+
 
 const getDepartmentById = async (req, res) => {
   try{

@@ -5,6 +5,7 @@ import LoginForm from './components/Login';
 import DashAdmin from './pages/DashAdmin';
 import AddEmployee from './pages/AddEmployee';
 import ListEmployees from './pages/ListEmployees';
+import Departments from './pages/Departments';
 function App() {
   return (
     // <LoginForm />
@@ -16,6 +17,8 @@ function App() {
       <Route path="/employee/list" element={<ListEmployees />} />
 
         <Route path="/employee/add" element={<AddEmployee />} />
+        <Route path="/departments" element={<Departments />} />
+
       </Routes>
       
     </Router>
