@@ -45,22 +45,21 @@ const registerUser = async (req, res) => {
   };
 
 
-
   const loginUser = async (req, res) => {
-    try{
-      const {email, password} = req.body;
-      const user = await req.User.findOne({ email: email});
-
-      if(!user){
-        return res.status(404).json({message : 'User not found'});
-
+    try {
+      const { email, password } = req.body;
+      const user = await req.User.findOne({ where: { email: email } });
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
       }
-
-      const isPasswordValid = await bcrypt.compare(password , user.password);
+  
+      console.log("Stored hashed password:", user.password); // Log du mot de passe haché
+      const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
         return res.status(401).json({ message: 'Invalid email or password' });
       }
-
+  
       const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, {
         expiresIn: '1h',
       });
@@ -75,14 +74,12 @@ const registerUser = async (req, res) => {
         },
         token,
       });
-    
-
-    }catch (error) {
+    } catch (error) {
       console.error('Failed to log in:', error);
       res.status(500).json({ message: 'Error during login', error: error.message });
     }
-  }
-
+  };
+  
   
 
   module.exports = {

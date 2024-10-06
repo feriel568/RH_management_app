@@ -1,6 +1,6 @@
 import React from "react";
 import { Layout, Menu } from "antd";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   UserOutlined,
   TeamOutlined,
@@ -10,11 +10,22 @@ import {
   ApartmentOutlined,
 } from "@ant-design/icons";
 import "antd/dist/reset.css";
-import '../styles/sideBarAdmin.css';
+import "../styles/sideBarAdmin.css";
 
 const { Sider } = Layout;
 
 function SideBarAdmin() {
+  const navigate = useNavigate();
+
+  // Logout function
+  const handleLogout = () => {
+    // Clear the token from localStorage (or sessionStorage)
+    localStorage.removeItem("token");
+
+    // Redirect to the home page or login page
+    navigate("/");
+  };
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
@@ -60,7 +71,12 @@ function SideBarAdmin() {
           </Menu.Item>
 
           {/* Logout Menu Item */}
-          <Menu.Item key="6" icon={<LogoutOutlined />} style={menuItemStyle}>
+          <Menu.Item
+            key="6"
+            icon={<LogoutOutlined />}
+            style={menuItemStyle}
+            onClick={handleLogout} // Handle logout on click
+          >
             Logout
           </Menu.Item>
         </Menu>
