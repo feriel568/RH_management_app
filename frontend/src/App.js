@@ -6,6 +6,7 @@ import DashAdmin from './pages/DashAdmin';
 import AddEmployee from './pages/AddEmployee';
 import ListEmployees from './pages/ListEmployees';
 import Departments from './pages/Departments';
+import EmployeeDashbord from './components/EmployeeDashbord';
 function App() {
   return (
     // <LoginForm />
@@ -18,6 +19,7 @@ function App() {
 
         <Route path="/employee/add" element={<AddEmployee />} />
         <Route path="/departments" element={<Departments />} />
+        <Route path="/employeedashbord" element={<EmployeeDashbord />} />
 
       </Routes>
       
