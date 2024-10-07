@@ -1,75 +1,65 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const mysql = require('mysql');
 const cors = require('cors');
-
-const {Sequelize , DataTypes } = require('sequelize');
-
+const { Sequelize } = require('sequelize');
 
 
 
+dotenv.config();
 
-dotenv.config()
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
-    host: process.env.DB_HOST,
-    dialect: 'mysql',
-    port: process.env.DB_PORT
+  host: process.env.DB_HOST,
+  dialect: 'mysql',
+  port: process.env.DB_PORT
 });
 
-// Test the connection
-sequelize.authenticate()
-    .then(() => {
-        console.log('Connection to MySQL using Sequelize has been established successfully.');
-    })
-    .catch(err => {
-        console.error('Unable to connect to the database:', err);
-    });
+// Import models
+const defineDepartmentModel = require('./models/department');
+const defineUserModel = require('./models/user');
+const defineDemandeCongeModel = require('./models/Demandeconge');
+const Department = defineDepartmentModel(sequelize);
+const User = defineUserModel(sequelize);
+const DemandeConge = defineDemandeCongeModel(sequelize);
 
-   
-    
-    const defineDepartmentModel = require('./models/department');
-    const defineUserModel = require('./models/user');
-    const Department = defineDepartmentModel(sequelize);
-    const User = defineUserModel(sequelize);
-    
-    Department.hasMany(User, {
-      as: 'users', 
-      foreignKey: 'departmentId', 
-    });
-    
-  
-    User.belongsTo(Department, {
-      as: 'department', 
-      foreignKey: 'departmentId', 
-    });
-    
-    sequelize.sync()
-      .then(() => {
-        console.log('Database synced successfully.');
-      })
-      .catch(err => {
-        console.error('Error syncing database:', err);
-      });
-    
-    
-const departmentRoutes = require('./routes/departmentRoute'); 
+// Define relationships
+Department.hasMany(User, { as: 'users', foreignKey: 'departmentId' });
+User.belongsTo(Department, { as: 'department', foreignKey: 'departmentId' });
+User.hasMany(DemandeConge, { as: 'conges', foreignKey: 'userId' });
+DemandeConge.belongsTo(User, { as: 'user', foreignKey: 'userId' });
+
+// Sync the database
+sequelize.sync().then(() => {
+  console.log('Database synced successfully.');
+}).catch(err => {
+  console.error('Error syncing database:', err);
+});
+// app.js
+app.use((req, res, next) => {
+  req.User = User;
+  req.Department = Department;
+  req.DemandeConge = DemandeConge; // If you're using this model as well
+  next();
+});
+
+
+
+
+// Import routes
+const departmentRoutes = require('./routes/departmentRoute');
 const userRoutes = require('./routes/userRoute');
+const demandeCongeRoutes = require('./routes/demandeCongeRoute');
 
- // Routes 
- app.use((req, res, next) => {
-    req.Department = Department; 
-    req.User = User;
-    next();
-  }, departmentRoutes);
-  app.use('/department', departmentRoutes); ;
+// Use routes
+app.use('/department', departmentRoutes);
+app.use('/user', userRoutes);
+app.use('/demandeconge', demandeCongeRoutes);
 
-  app.use('/user', userRoutes);
- 
-app.listen(process.env.PORT,()=>{
-    console.log('listening on port '+process.env.PORT);
-})
+// Start server
+app.listen(process.env.PORT, () => {
+  console.log('Server is listening on port ' + process.env.PORT);
+});
