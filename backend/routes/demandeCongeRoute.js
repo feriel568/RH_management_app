@@ -9,7 +9,8 @@ router.post('/', demandeCongeController.createDemandeConge);
 router.get('/', demandeCongeController.getAllDemandesConge);
 
 // Get a single DemandeConge by ID
-router.get('/:id', demandeCongeController.getDemandeCongeById);
+router.get('/:userId', demandeCongeController.getDemandesByUserId);
+router.get('/demande/:id', demandeCongeController.getDemandeCongeById);
 
 // Update a DemandeConge by ID
 router.put('/:id', demandeCongeController.updateDemandeConge);

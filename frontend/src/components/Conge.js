@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React from 'react';
+import '../styles/conge.css';
 
 class Conge extends React.Component {
   state = {
@@ -10,9 +11,26 @@ class Conge extends React.Component {
       statut: 'pending', // Valeur par défaut
       motif: '',
       datedemande: '',
-      userId: '',
+      userId: '', // userId sera automatiquement rempli lors du montage du composant
     },
   };
+
+  // Récupérer le userId du localStorage lors du montage du composant
+  componentDidMount() {
+    const userId = localStorage.getItem('userId'); // Récupérer l'ID de l'utilisateur stocké
+    if (userId) {
+      this.setState({
+        DemandeConge: {
+          ...this.state.DemandeConge,
+          userId: userId, // Mettre à jour le userId dans l'état
+        },
+      });
+    } else {
+      console.error("User not logged in");
+      // Vous pouvez rediriger vers la page de login si userId n'existe pas
+      this.props.history.push('/login');
+    }
+  }
 
   // Handlers pour les champs de formulaire
   handledatedebut = (e) => {
@@ -69,20 +87,19 @@ class Conge extends React.Component {
     });
   };
 
-  handleuserId = (e) => {
-    this.setState({
-      DemandeConge: {
-        ...this.state.DemandeConge,
-        userId: e.target.value,
-      },
-    });
-  };
-
   handleSubmit = (e) => {
     e.preventDefault();
     axios.post('http://localhost:4005/demandeconge', this.state.DemandeConge)
-      .then((response) => console.log(response.data))
-      .catch((error) => console.error('There was an error!', error));
+      .then((response) => {
+        console.log(response.data);
+        // Afficher une alerte de succès
+        window.alert('Demande de congé envoyée avec succès !');
+        // Rediriger vers la page /employeedashboard
+        this.props.history.push('/employeedashboard');
+      })
+      .catch((error) => {
+        console.error('There was an error!', error);
+      });
   };
 
   render() {
@@ -114,9 +131,6 @@ class Conge extends React.Component {
         
         <label>datedemande:</label>
         <input type="date" onChange={this.handledatedemande} /><br />
-        
-        <label>userId:</label>
-        <input type="number" onChange={this.handleuserId} /><br />
         
         <button onClick={this.handleSubmit}>Send</button>
       </div>
