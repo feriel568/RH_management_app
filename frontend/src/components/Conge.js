@@ -28,7 +28,7 @@ class Conge extends React.Component {
     } else {
       console.error("User not logged in");
       // Vous pouvez rediriger vers la page de login si userId n'existe pas
-      this.props.history.push('/login');
+      this.props.navigate('/login');
     }
   }
 
@@ -95,7 +95,8 @@ class Conge extends React.Component {
         // Afficher une alerte de succès
         window.alert('Demande de congé envoyée avec succès !');
         // Rediriger vers la page /employeedashboard
-        this.props.history.push('/employeedashboard');
+       
+        window.location.href = 'http://localhost:3000/employeedashbord'; 
       })
       .catch((error) => {
         console.error('There was an error!', error);
@@ -122,8 +123,7 @@ class Conge extends React.Component {
         <label>statut:</label>
         <select onChange={this.handlestatut} value={this.state.DemandeConge.statut}>
           <option value="pending">Pending</option>
-          <option value="approved">Approved</option>
-          <option value="rejected">Rejected</option>
+          
         </select><br />
         
         <label>motif:</label>

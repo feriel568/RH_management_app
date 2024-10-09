@@ -4,8 +4,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 const UpdateDemande = () => {
   const { id } = useParams(); // Get the demande ID from the URL parameters
-  const navigate = useNavigate(); // Use useNavigate instead of useHistory
-  const [demande, setDemande] = React.useState({
+  const navigate = useNavigate(); // Use useNavigate for navigation
+  const [demande, setDemande] = React.useState({ // Initialize with an object to avoid undefined errors
     datedebut: '',
     datefin: '',
     typeconge: '',
@@ -20,7 +20,16 @@ const UpdateDemande = () => {
     const fetchDemande = async () => {
       try {
         const response = await axios.get(`http://localhost:4005/demandeconge/demande/${id}`);
-        setDemande(response.data); // Populate state with fetched demande
+        
+        // Format dates correctly
+        const fetchedDemande = {
+          ...response.data,
+          datedebut: response.data.datedebut.split('T')[0], // Format date for input
+          datefin: response.data.datefin.split('T')[0],
+          datedemande: response.data.datedemande.split('T')[0],
+        };
+
+        setDemande(fetchedDemande); // Populate state with formatted demande
       } catch (error) {
         console.error("Error fetching demande details:", error);
       }
@@ -39,11 +48,16 @@ const UpdateDemande = () => {
     try {
       await axios.put(`http://localhost:4005/demandeconge/${id}`, demande);
       alert("Demande updated successfully!");
-      navigate('/listconge'); // Use navigate instead of history.push
+      navigate('/listconge'); // Navigate back to the list page
     } catch (error) {
       console.error("Error updating demande:", error);
     }
   };
+
+  // Wait until demande data is loaded
+  if (!demande) {
+    return <p>Loading demande data...</p>;
+  }
 
   return (
     <div>
