@@ -63,7 +63,8 @@ function SideBarAdmin() {
           </Menu.Item>
 
           <Menu.Item key="4" icon={<TeamOutlined />} style={menuItemStyle}>
-            Holidays
+          <NavLink to="/listconge">Holidays</NavLink>
+            
           </Menu.Item>
 
           <Menu.Item key="5" icon={<FileOutlined />} style={menuItemStyle}>

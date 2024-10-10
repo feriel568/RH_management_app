@@ -20,10 +20,11 @@ const LoginForm = () => {
         password: values.password,
       });
 
-      const { role, token } = response.data.user;
+      const { id, role, token } = response.data.user; // Récupérer l'id en plus du rôle et du token
 
-      // Save the token in localStorage or sessionStorage
-      localStorage.setItem("token", token);
+      // Save the id and token in localStorage or sessionStorage
+      localStorage.setItem("userId", id);  // Stocker l'ID utilisateur
+      localStorage.setItem("token", token); // Stocker le token
 
       // Role-based redirection
       if (role === "HRAdmin") {
