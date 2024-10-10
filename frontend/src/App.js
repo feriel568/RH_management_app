@@ -5,11 +5,11 @@ import DashAdmin from './pages/DashAdmin';
 import AddEmployee from './pages/AddEmployee';
 import ListEmployees from './pages/ListEmployees';
 import Departments from './pages/Departments';
-import EmployeeDashbord from './components/EmployeeDashbord';
-import Conge from './components/Conge';
-import Listconge from './components/Listconge';
-import Resultatconge from './components/Resultatconge';
-import UpdateDemande from './components/UpdateDemande';
+import EmployeeDashbord from './pages/EmployeeDashbord';
+import Conge from './pages/Conge';
+import Listconge from './pages/Listconge';
+import Resultatconge from './pages/Resultatconge';
+import UpdateDemande from './pages/UpdateDemande';
 
 function App() {
   return (

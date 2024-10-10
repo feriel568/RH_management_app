@@ -48,13 +48,16 @@ const Departments = () => {
         <Space size="middle">
           <Button icon={<EditOutlined />} onClick={() => handleEdit(record)}>Edit</Button>
           <Popconfirm
-            title="Are you sure to delete this department?"
-            okText="Yes"
-            cancelText="No"
-            onConfirm={() => handleDelete(record.id)} 
-          >
-            <Button danger icon={<DeleteOutlined />}>Delete</Button>
-          </Popconfirm>
+  title="Are you sure to delete this department?"
+  okText="Yes"
+  cancelText="No"
+  onConfirm={() => handleDelete(record.id)} 
+  okButtonProps={{ type: 'primary', size: 'default', style: { width: '80px' } }} // Adjust width of Yes button
+  cancelButtonProps={{ size: 'default', style: { width: '80px' } }} // Adjust width of No button
+>
+  <Button danger icon={<DeleteOutlined />}>Delete</Button>
+</Popconfirm>
+
         </Space>
       ),
     },
@@ -133,6 +136,12 @@ const Departments = () => {
                   icon={<PlusOutlined />}
                   htmlType="submit"
                   loading={loading}
+                  style={{
+  
+                    gap: '8px' ,
+                    width: '150px',
+                    marginBottom : '10px',
+                  }}
                 >
                   {editingDepartment ? 'Update Department' : 'Add Department'} 
                 </Button>

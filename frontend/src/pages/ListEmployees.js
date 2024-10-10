@@ -72,14 +72,15 @@ const ListEmployees = () => {
   
            
             <Popconfirm
-              title="Are you sure to delete this employee?"
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button danger icon={<DeleteOutlined />}>
-                Delete
-              </Button>
-            </Popconfirm>
+  title="Are you sure to delete this department?"
+  okText="Yes"
+  cancelText="No"
+  okButtonProps={{ type: 'primary', size: 'default', style: { width: '80px' } }} 
+  cancelButtonProps={{ size: 'default', style: { width: '80px' } }} 
+>
+  <Button danger icon={<DeleteOutlined />}>Delete</Button>
+</Popconfirm>
+
           </Space>
         ),
       },
@@ -94,13 +95,25 @@ const ListEmployees = () => {
       <Layout className="site-layout">
         <Content style={contentStyle}>
           
-          <Button 
-            type="primary" 
-            icon={<PlusOutlined />} 
-            style={{ marginBottom: '20px' }}
-          >
-            <Link to="/employee/add" style={{ color: 'white' }}>Add Employee</Link>
-          </Button>
+        <Button 
+  type="primary" 
+  icon={<PlusOutlined />} 
+  style={{
+  
+    gap: '8px' ,
+    width: '150px',
+    marginBottom : '10px',
+  }}
+ 
+>
+  <Link to="/employee/add" style={{ 
+    color: 'white', 
+    textDecoration: 'none' // Remove underline from the link
+  }}>
+    Add Employee
+  </Link>
+</Button>
+
 
           
           <Table 
