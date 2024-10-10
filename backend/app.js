@@ -45,7 +45,8 @@ sequelize.sync().then(() => {
 app.use((req, res, next) => {
   req.User = User;
   req.Department = Department;
-  req.DemandeConge = DemandeConge; // If you're using this model as well
+  req.DemandeConge = DemandeConge; 
+  req.TimeSheet = TimeSheet;
   next();
 });
 
@@ -56,11 +57,14 @@ app.use((req, res, next) => {
 const departmentRoutes = require('./routes/departmentRoute');
 const userRoutes = require('./routes/userRoute');
 const demandeCongeRoutes = require('./routes/demandeCongeRoute');
+const timeSheetRoutes = require('./routes/timeSheetRoutes');
+
 
 // Use routes
 app.use('/department', departmentRoutes);
 app.use('/user', userRoutes);
 app.use('/demandeconge', demandeCongeRoutes);
+app.use('/timeSheet', timeSheetRoutes);
 
 // Start server
 app.listen(process.env.PORT, () => {
