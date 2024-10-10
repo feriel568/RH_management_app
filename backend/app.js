@@ -22,15 +22,18 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 const defineDepartmentModel = require('./models/department');
 const defineUserModel = require('./models/user');
 const defineDemandeCongeModel = require('./models/Demandeconge');
+const defineTimeSheetModel = require('./models/timeSheet'); 
 const Department = defineDepartmentModel(sequelize);
 const User = defineUserModel(sequelize);
 const DemandeConge = defineDemandeCongeModel(sequelize);
+const TimeSheet = defineTimeSheetModel(sequelize);
 
 // Define relationships
 Department.hasMany(User, { as: 'users', foreignKey: 'departmentId' });
 User.belongsTo(Department, { as: 'department', foreignKey: 'departmentId' });
 User.hasMany(DemandeConge, { as: 'conges', foreignKey: 'userId' });
 DemandeConge.belongsTo(User, { as: 'user', foreignKey: 'userId' });
+TimeSheet.belongsTo(User, { as: 'user', foreignKey: 'userId' });
 
 // Sync the database
 sequelize.sync().then(() => {
