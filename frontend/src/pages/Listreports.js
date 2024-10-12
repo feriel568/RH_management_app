@@ -1,76 +1,120 @@
-import React from 'react';
-import '../styles/conge1.css'; // Include CSS file for styling
+import React, { useEffect, useState } from "react";
+import SideBarAdmin from "../components/SideBarAdmin";
+import { Layout, Table, Button, Space, Popconfirm, message } from "antd";
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+
+const { Content } = Layout;
 
 const Listreports = () => {
-  const [reports, setreports] = React.useState([]);
-  const [error, setError] = React.useState(null);
-  const navigate = useNavigate(); // Initialize useNavigate
-
-  React.useEffect(() => {
-    axios
-      .get('http://localhost:4005/report')
-      .then((response) => setreports(response.data))
-      .catch((error) => {
+  const [reports, setReports] = useState([]);
+  const [error, setError] = useState(null);
+  
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        const response = await axios.get('http://localhost:4005/report');
+        setReports(response.data);
+      } catch (error) {
         console.error("Error fetching data:", error);
         setError(error.response ? error.response.data.message : "Error fetching data");
-      });
+      }
+    };
+    
+    fetchReports();
   }, []);
 
-  const handleUpdate = (reportsId) => {
-    console.log("Update demande with ID:", reportsId);
-    navigate(`/updatee/${reportsId}`); // Use navigate to go to the update page
+  const handleUpdate = (reportId) => {
+    console.log("Update report with ID:", reportId);
+    // Navigate to the update page here (not included in this code snippet)
   };
-  
-  const handleDelete = (reportsId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this demande?");
+
+  const handleDelete = async (reportId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this report?");
     if (confirmDelete) {
-      axios
-        .delete(`http://localhost:4005/report/${reportsId}`)
-        .then((response) => {
-            setreports(prevState => prevState.filter(item => item.id !== reportsId));
-          alert(response.data.message);
-        })
-        .catch((error) => {
-          console.error("Error deleting demande:", error);
-          setError(error.response ? error.response.data.message : "Error deleting data");
-        });
+      try {
+        const response = await axios.delete(`http://localhost:4005/report/${reportId}`);
+        setReports(prevState => prevState.filter(item => item.id !== reportId));
+        message.success(response.data.message);
+      } catch (error) {
+        console.error("Error deleting report:", error);
+        setError(error.response ? error.response.data.message : "Error deleting report");
+      }
     }
   };
 
+  const columns = [
+    {
+      title: 'Type Rapport',
+      dataIndex: 'typerapport',
+      key: 'typerapport',
+    },
+    {
+      title: 'Date Génération',
+      dataIndex: 'dategeneration',
+      key: 'dategeneration',
+    },
+    {
+      title: 'Contenu',
+      dataIndex: 'contenu',
+      key: 'contenu',
+    },
+    {
+      title: 'User ID',
+      dataIndex: 'userId',
+      key: 'userId',
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (text, record) => (
+        <Space size="middle">
+          <Button icon={<EditOutlined />} onClick={() => handleUpdate(record.id)}>Edit</Button>
+          <Popconfirm
+            title="Are you sure to delete this report?"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={() => handleDelete(record.id)}
+          >
+            <Button danger icon={<DeleteOutlined />}>Delete</Button>
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ];
+
   return (
-    <div className="conge-table-container">
-      <h2>List of Reports</h2>
-      {error && <p className="error">{error}</p>}
-      <table className="conge-table">
-        <thead>
-          <tr>
-            <th>typerapport</th>
-            <th>dategeneration</th>
-            <th>contenu</th>
-            <th>userId</th>
-          </tr>
-        </thead>
-        <tbody>
-          {reports.map((item) => (
-            <tr key={item.id}> {/* Use a unique key */}
-              <td>{item.typerapport}</td>
-              <td>{item.dategeneration}</td>
-              <td>{item.contenu}</td>
-              <td>{item.userId}</td>
-            
-              <td>
-                <button onClick={() => handleUpdate(item.id)}>Update</button> {/* Update button */}
-                <button onClick={() => handleDelete(item.id)}>Delete</button> {/* Delete button */}
-               
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="container" style={containerFlex}>
+      <div className="sidebar">
+        <SideBarAdmin />
+      </div>
+      <Layout className="site-layout">
+        <Content style={contentStyle}>
+          <h2>List of Reports</h2>
+          {error && <p className="error">{error}</p>}
+          <Table
+            columns={columns}
+            dataSource={reports.map(report => ({ ...report, key: report.id }))}
+            pagination={{ pageSize: 5 }}
+            rowKey="key"
+            style={{ marginTop: "20px" }}
+          />
+        </Content>
+      </Layout>
     </div>
   );
+};
+
+const containerFlex = {
+  display: "flex",
+};
+
+const contentStyle = {
+  margin: "24px 16px",
+  padding: 24,
+  backgroundColor: "#EDF2F4",
+  borderRadius: "10px",
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
 };
 
 export default Listreports;
