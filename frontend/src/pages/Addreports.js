@@ -49,16 +49,7 @@ class Addreports extends React.Component {
         <Layout className="site-layout">
           <Content style={contentStyle}>
             {/* Small Button to view list of reports */}
-            <div style={topRightButtonStyle}>
-              <Button 
-                type="primary" 
-                size="small" // Make the button small
-                onClick={this.handleViewReports} 
-                style={{ backgroundColor: '#1890ff', borderColor: '#1890ff' }}
-              >
-                View Reports
-              </Button>
-            </div>
+          
 
             {/* Form to submit a new report */}
             <Form onFinish={this.handleSubmit} layout="vertical">
@@ -97,7 +88,17 @@ class Addreports extends React.Component {
               <Form.Item>
                 <Button type="primary" htmlType="submit" icon={<PlusOutlined />}>
                   Send Report
-                </Button>
+                </Button><br></br><br></br>
+                <div style={topRightButtonStyle}>
+              <Button 
+                type="primary" 
+                size="small" // Make the button small
+                onClick={this.handleViewReports} 
+                style={{ backgroundColor: '#1890ff', borderColor: '#1890ff' }}
+              >
+                View ALL Reports
+              </Button>
+            </div>
               </Form.Item>
             </Form>
           </Content>
