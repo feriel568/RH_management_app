@@ -10,6 +10,9 @@ import Conge from './pages/Conge';
 import Listconge from './pages/Listconge';
 import Resultatconge from './pages/Resultatconge';
 import UpdateDemande from './pages/UpdateDemande';
+import Addreports from './pages/Addreports';
+import Listreports from './pages/Listreports';
+import Updatereports from './pages/Updatereports';
 
 function App() {
   return (
@@ -25,6 +28,10 @@ function App() {
         <Route path="/listconge" element={<Listconge />} />
         <Route path="/resultaconge" element={<Resultatconge />} />
         <Route path="/update/:id" element={<UpdateDemande />} /> {/* Corrected here */}
+        <Route path="/addreports" element={<Addreports />} />
+        <Route path="/listReports" element={<Listreports />} />
+        <Route path="/updatee/:id" element={<Updatereports />} /> {/* Corrected here */}
+        
       </Routes>
     </Router>
   );
