@@ -48,7 +48,7 @@ const UpdateDemande = () => {
     try {
       await axios.put(`http://localhost:4005/demandeconge/${id}`, demande);
       alert("Demande updated successfully!");
-      navigate('/listconge'); // Navigate back to the list page
+      navigate('/listReports'); // Navigate back to the list page
     } catch (error) {
       console.error("Error updating demande:", error);
     }

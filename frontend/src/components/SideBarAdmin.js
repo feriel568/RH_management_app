@@ -68,7 +68,8 @@ function SideBarAdmin() {
           </Menu.Item>
 
           <Menu.Item key="5" icon={<FileOutlined />} style={menuItemStyle}>
-            Reports
+          <NavLink to="/addreports">Reports</NavLink>
+            
           </Menu.Item>
 
           {/* Logout Menu Item */}
