@@ -35,16 +35,36 @@ const createTimeSheet = async (req, res) => {
 
   };
 // Get all timesheets 
-  const getAllTimeSheets = async (req, res) => {
-    try {
-      const allTimeSheets = await req.TimeSheet.findAll();
-    //  console.log(allTimeSheets);
-      res.status(200).json(allTimeSheets);
-    } catch (error) {
-      console.error('Error retrieving timesheets:', error);
-      res.status(500).json({ message: 'Error retrieving timesheets', error });
-    }
-  };
+const getAllTimeSheets = async (req, res) => {
+  try {
+    // Fetch all time sheets and include the user information based on userId
+    const allTimeSheets = await req.TimeSheet.findAll({
+      include: [{
+        model: req.User,
+        as: 'user', 
+        attributes: ['name'], 
+      }],
+    });
+
+   
+    const enrichedTimeSheets = allTimeSheets.map(sheet => ({
+      id: sheet.id,
+      workDays: sheet.workDays,
+      totalHours: sheet.totalHours,
+      status: sheet.status,
+      userId: sheet.userId,
+      employeeName: sheet.user ? sheet.user.name : 'Unknown', // Include the user's name
+      createdAt: sheet.createdAt,
+      updatedAt: sheet.updatedAt,
+    }));
+
+    res.status(200).json(enrichedTimeSheets);
+  } catch (error) {
+    console.error('Error retrieving timesheets:', error);
+    res.status(500).json({ message: 'Error retrieving timesheets', error });
+  }
+};
+
   // Approve or refuse timesheet's status
   const changeTimeSheetStatus = async (req, res) => {
     const { timesheetId } = req.params; 

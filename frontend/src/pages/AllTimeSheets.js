@@ -20,6 +20,7 @@ const AllTimeSheets = () => {
           totalHours: sheet.totalHours,
           status: sheet.status,
           userId: sheet.userId,
+          employeeName: sheet.employeeName || 'Unknown', // Ensure employeeName is included
         }));
         setTimeSheets(formattedData);
       } catch (error) {
@@ -31,6 +32,11 @@ const AllTimeSheets = () => {
   }, []);
 
   const columns = [
+    {
+      title: 'Employee Name',
+      dataIndex: 'employeeName', // Add employee name column
+      key: 'employeeName',
+    },
     {
       title: 'WorkDays',
       dataIndex: 'workDays',
@@ -58,12 +64,13 @@ const AllTimeSheets = () => {
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
-          <Button icon={<EditOutlined />} >Approve</Button>
+          <Button icon={<EditOutlined />}>Approve</Button>
           <Popconfirm
             title="Are you sure to delete this timesheet?"
             okText="Yes"
             cancelText="No"
-            // onConfirm={() => handleDelete(record.id)} // Implement delete logic
+            // Uncomment and implement delete logic
+            // onConfirm={() => handleDelete(record.id)}
             okButtonProps={{ type: 'primary', size: 'default', style: { width: '80px' } }}
             cancelButtonProps={{ size: 'default', style: { width: '80px' } }}
           >

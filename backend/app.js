@@ -26,7 +26,7 @@ const defineTimeSheetModel = require('./models/timeSheet');
 const Department = defineDepartmentModel(sequelize);
 const User = defineUserModel(sequelize);
 const DemandeConge = defineDemandeCongeModel(sequelize);
-const TimeSheet = defineTimeSheetModel(sequelize);
+const TimeSheet = defineTimeSheetModel(sequelize, User);
 
 // Define relationships
 Department.hasMany(User, { as: 'users', foreignKey: 'departmentId' });
