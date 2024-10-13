@@ -12,6 +12,9 @@ import Resultatconge from './pages/Resultatconge';
 import UpdateDemande from './pages/UpdateDemande';
 import AllTimeSheets from './pages/AllTimeSheets';
 import CreateTimeSheet from './pages/CreateTimeSheet';
+import Addreports from './pages/Addreports';
+import Listreports from './pages/Listreports';
+import Updatereports from './pages/Updatereports';
 
 function App() {
   return (
@@ -29,6 +32,11 @@ function App() {
         <Route path="/update/:id" element={<UpdateDemande />} /> 
         <Route path="/timesheets" element={<AllTimeSheets />} />
         <Route path="/timesheet/create" element={<CreateTimeSheet />} />
+        <Route path="/update/:id" element={<UpdateDemande />} /> {/* Corrected here */}
+        <Route path="/addreports" element={<Addreports />} />
+        <Route path="/listReports" element={<Listreports />} />
+        <Route path="/updatee/:id" element={<Updatereports />} /> {/* Corrected here */}
+        
       </Routes>
     </Router>
   );

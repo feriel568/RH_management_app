@@ -21,22 +21,24 @@ const UpdateDemande = () => {
       try {
         const response = await axios.get(`http://localhost:4005/demandeconge/demande/${id}`);
         
-        // Format dates correctly
+        // Normalize the typeconge value to match the select options
         const fetchedDemande = {
           ...response.data,
           datedebut: response.data.datedebut.split('T')[0], // Format date for input
           datefin: response.data.datefin.split('T')[0],
           datedemande: response.data.datedemande.split('T')[0],
+          typeconge: response.data.typeconge.charAt(0).toUpperCase() + response.data.typeconge.slice(1) // Normalize typeconge
         };
-
+  
         setDemande(fetchedDemande); // Populate state with formatted demande
       } catch (error) {
         console.error("Error fetching demande details:", error);
       }
     };
-
+  
     fetchDemande();
   }, [id]);
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,7 +50,7 @@ const UpdateDemande = () => {
     try {
       await axios.put(`http://localhost:4005/demandeconge/${id}`, demande);
       alert("Demande updated successfully!");
-      navigate('/listconge'); // Navigate back to the list page
+      navigate('/listReports'); // Navigate back to the list page
     } catch (error) {
       console.error("Error updating demande:", error);
     }
