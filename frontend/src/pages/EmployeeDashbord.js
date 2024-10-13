@@ -22,6 +22,7 @@ const Navbar = () => {
         <li><a href="/resultaconge">Resultat congé</a></li>
         <li><a href="/profile">Profile</a></li>
         <li><a href="/requests">Requests</a></li>
+        <li><a href="/timesheet/create">TimeSheet</a></li>
         <li><button onClick={handleLogout}>Logout</button></li>
       </ul>
     </nav>

@@ -11,6 +11,7 @@ import Listconge from './pages/Listconge';
 import Resultatconge from './pages/Resultatconge';
 import UpdateDemande from './pages/UpdateDemande';
 import AllTimeSheets from './pages/AllTimeSheets';
+import CreateTimeSheet from './pages/CreateTimeSheet';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/resultaconge" element={<Resultatconge />} />
         <Route path="/update/:id" element={<UpdateDemande />} /> 
         <Route path="/timesheets" element={<AllTimeSheets />} />
+        <Route path="/timesheet/create" element={<CreateTimeSheet />} />
       </Routes>
     </Router>
   );
