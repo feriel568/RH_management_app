@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import SideBarAdmin from "../components/SideBarAdmin";
-import { Layout, Button, Table, Space, Popconfirm } from "antd";
+import { Layout, Button, Table, Space, Popconfirm , message } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import axios from 'axios'; // Make sure to install axios
 
@@ -8,6 +8,8 @@ const { Content } = Layout;
 
 const AllTimeSheets = () => {
   const [timeSheets, setTimeSheets] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [disabledRows, setDisabledRows] = useState({}); 
 
   // Fetch all time sheets from the backend
   useEffect(() => {
@@ -64,22 +66,56 @@ const AllTimeSheets = () => {
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
-          <Button icon={<EditOutlined />}>Approve</Button>
+ <Button 
+            icon={<EditOutlined />} 
+            onClick={() => changeTimeSheetStatus(record.key, 'approved')}
+            disabled={disabledRows[record.key] || record.status === 'approved'}
+            loading={loading}
+          >
+            Approve
+          </Button>          
           <Popconfirm
-            title="Are you sure to delete this timesheet?"
+            title="Are you sure to refuse this timesheet?"
             okText="Yes"
             cancelText="No"
-            // Uncomment and implement delete logic
-            // onConfirm={() => handleDelete(record.id)}
+            onConfirm={() => changeTimeSheetStatus(record.key, 'rejected')}
+            disabled={disabledRows[record.key] || record.status === 'rejected'}
             okButtonProps={{ type: 'primary', size: 'default', style: { width: '80px' } }}
             cancelButtonProps={{ size: 'default', style: { width: '80px' } }}
           >
-            <Button danger icon={<DeleteOutlined />}>Refuse</Button>
+            <Button 
+              danger 
+              icon={<DeleteOutlined />} 
+              disabled={disabledRows[record.key] || record.status === 'rejected'}
+            >
+              Refuse
+            </Button>
           </Popconfirm>
         </Space>
       ),
     },
   ];
+
+  const changeTimeSheetStatus = async (id,status) => {
+    setLoading(true);
+    try{
+      const response = await axios.patch(`http://localhost:4005/timesheet/status/${id}`, { status });
+      if (response.status === 200) {
+        message.success(`Timesheet ${status} successfully!`);
+        // Update timesheet status in local state
+        setTimeSheets(prev => prev.map(sheet => 
+          sheet.key === id ? { ...sheet, status } : sheet
+        ));
+        // Disable the buttons for this row
+        setDisabledRows(prev => ({ ...prev, [id]: true }));
+      }
+    }catch (error) {
+      message.error('Error updating timesheet status.');
+      console.error(error);
+    }
+    setLoading(false);
+  }
+
 
   return (
     <div className="container" style={containerFlex}>
