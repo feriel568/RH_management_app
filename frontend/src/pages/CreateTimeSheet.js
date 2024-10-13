@@ -10,16 +10,36 @@ const CreateTimeSheet = () => {
   const [totalHours, setTotalHours] = useState(0);
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [timeSheets, setTimeSheets] = useState([]);
 
   // Retrieve user ID from localStorage on component mount
   useEffect(() => {
     const storedUserId = localStorage.getItem('userId');
     if (storedUserId) {
       setUserId(storedUserId);
+      fetchTimeSheets(storedUserId);
     } else {
       message.error('No user ID found in local storage!');
     }
   }, []);
+
+  // Fetch timesheets for the user
+  const fetchTimeSheets = async (userId) => {
+    try {
+      const response = await axios.get(`http://localhost:4005/timesheet/${userId}`);
+      const formattedData = response.data.map(sheet => ({
+        key: sheet.id,
+        workDays: JSON.parse(sheet.workDays),
+        totalHours: sheet.totalHours,
+        status: sheet.status,
+        userId: sheet.userId,
+      }));
+      setTimeSheets(formattedData);
+    } catch (error) {
+      message.error('Error fetching timesheets.');
+      console.error('Error fetching timesheets:', error);
+    }
+  };
 
   // Add a new workday (with selected day and hours)
   const handleAddDay = () => {
@@ -55,6 +75,7 @@ const CreateTimeSheet = () => {
       if (userId) {
         await axios.post(`http://localhost:4005/timesheet/${userId}`, payload);
         message.success('Timesheet created successfully!');
+        fetchTimeSheets(userId); // Refresh the timesheets after creation
       } else {
         message.error('User ID is not available');
       }
@@ -64,6 +85,32 @@ const CreateTimeSheet = () => {
       setLoading(false);
     }
   };
+
+  // Table columns for displaying timesheets
+  const columns = [
+    {
+      title: 'WorkDays',
+      dataIndex: 'workDays',
+      key: 'workDays',
+      render: (text) => (
+        <div>
+          {text.map(day => (
+            <div key={day.day}>{`${day.day}: ${day.hours} hours`}</div>
+          ))}
+        </div>
+      )
+    },
+    {
+      title: 'Total Hours',
+      dataIndex: 'totalHours',
+      key: 'totalHours',
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+    }
+  ];
 
   return (
     <div style={containerStyle}>
@@ -124,6 +171,14 @@ const CreateTimeSheet = () => {
           </Button>
         </Form.Item>
       </Form>
+
+      <h2>User Timesheets</h2>
+      <Table
+        columns={columns}
+        dataSource={timeSheets} // Use fetched timesheets as the data source
+        pagination={{ pageSize: 5 }}
+        rowKey="key"
+      />
     </div>
   );
 };
