@@ -36,7 +36,7 @@ const AllTimeSheets = () => {
   const columns = [
     {
       title: 'Employee Name',
-      dataIndex: 'employeeName', // Add employee name column
+      dataIndex: 'employeeName',
       key: 'employeeName',
     },
     {
@@ -66,10 +66,10 @@ const AllTimeSheets = () => {
       key: 'action',
       render: (text, record) => (
         <Space size="middle">
- <Button 
+          <Button 
             icon={<EditOutlined />} 
             onClick={() => changeTimeSheetStatus(record.key, 'approved')}
-            disabled={disabledRows[record.key] || record.status === 'approved'}
+            disabled={disabledRows[record.key] || record.status === 'approved' || record.status === 'rejected'}
             loading={loading}
           >
             Approve
@@ -79,14 +79,14 @@ const AllTimeSheets = () => {
             okText="Yes"
             cancelText="No"
             onConfirm={() => changeTimeSheetStatus(record.key, 'rejected')}
-            disabled={disabledRows[record.key] || record.status === 'rejected'}
+            disabled={disabledRows[record.key] || record.status === 'approved' || record.status === 'rejected'}
             okButtonProps={{ type: 'primary', size: 'default', style: { width: '80px' } }}
             cancelButtonProps={{ size: 'default', style: { width: '80px' } }}
           >
             <Button 
               danger 
               icon={<DeleteOutlined />} 
-              disabled={disabledRows[record.key] || record.status === 'rejected'}
+              disabled={disabledRows[record.key] || record.status === 'approved' || record.status === 'rejected'}
             >
               Refuse
             </Button>
@@ -95,6 +95,7 @@ const AllTimeSheets = () => {
       ),
     },
   ];
+  
 
   const changeTimeSheetStatus = async (id,status) => {
     setLoading(true);
