@@ -35,9 +35,9 @@ Department.hasMany(User, { as: 'users', foreignKey: 'departmentId' });
 User.belongsTo(Department, { as: 'department', foreignKey: 'departmentId' });
 User.hasMany(DemandeConge, { as: 'conges', foreignKey: 'userId' });
 DemandeConge.belongsTo(User, { as: 'user', foreignKey: 'userId' });
-TimeSheet.belongsTo(User, { as: 'user', foreignKey: 'userId' });
+TimeSheet.belongsTo(User, { as: 'user', foreignKey: 'userId' , onDelete: 'CASCADE' });
 
-User.hasMany(report,{as:'reports',foreignKey:'userId'});
+User.hasMany(report,{as:'reports',foreignKey:'userId' });
 report.belongsTo(User,{as:'User',foreignKey:'userId'});
 
 

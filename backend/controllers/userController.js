@@ -96,8 +96,27 @@ const registerUser = async (req, res) => {
     }
   };
 
+  const deleteUser = async (req, res) => {
+    try {
+      const { id } = req.params;
+      
+      const user = await req.User.findByPk(id);
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      await user.destroy(); 
+      res.status(200).json({ message: 'User deleted successfully with related records' });
+    } catch (error) {
+      console.error('Failed to delete user:', error);
+      res.status(500).json({ message: 'Error deleting user', error: error.message });
+    }
+  };
+  
   module.exports = {
     registerUser,
     loginUser,
-    getAllUsers
+    getAllUsers,
+    deleteUser
   }

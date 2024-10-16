@@ -81,6 +81,7 @@ const [users , setUsers] = useState([]);
   title="Are you sure to delete this department?"
   okText="Yes"
   cancelText="No"
+  onConfirm={() => handleDelete(record.id)} 
   okButtonProps={{ type: 'primary', size: 'default', style: { width: '80px' } }} 
   cancelButtonProps={{ size: 'default', style: { width: '80px' } }} 
 >
@@ -91,6 +92,17 @@ const [users , setUsers] = useState([]);
         ),
       },
   ];
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:4005/user/${id}`); 
+      setUsers(users.filter((item) => item.id !== id)); 
+      message.success('user deleted successfully!');
+    } catch (error) {
+      message.error('Failed to delete user');
+    }
+  };
+
 
   return (
     <div className="container" style={containerFlex}>
