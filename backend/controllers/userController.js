@@ -80,9 +80,24 @@ const registerUser = async (req, res) => {
     }
   };
   
-  
+  const getAllUsers = async (req, res) => {
+    try {
+      const users = await req.User.findAll();
+      res.status(200).json({
+        message: 'Users retrieved successfully',
+        users: users,
+      });
+    } catch (error) {
+      console.error('Failed to retrieve users:', error); 
+      res.status(500).json({
+        message: 'Error retrieving users', 
+        error: error.message, 
+      });
+    }
+  };
 
   module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    getAllUsers
   }

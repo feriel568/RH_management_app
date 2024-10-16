@@ -1,34 +1,36 @@
-import React from 'react';
+import React , { useEffect, useState }from 'react';
 import { Link } from 'react-router-dom';
-import { Layout, Button, Table, Space, Popconfirm } from "antd";
+import { Layout, Button, Table, Space, Popconfirm , message} from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import "antd/dist/reset.css";
+import axios from 'axios';
 
 import SideBarAdmin from "../components/SideBarAdmin";
 
 const { Content } = Layout;
 
 const ListEmployees = () => {
-  
-  const employeesData = [
-    {
-      key: '1',
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      role: 'Employee',
-      department: 'Sales',
-      hireDate: '2023-01-01',
-    },
-    {
-      key: '2',
-      name: 'Jane Smith',
-      email: 'jane.smith@example.com',
-      role: 'HR Admin',
-      department: 'HR',
-      hireDate: '2022-07-15',
-    },
-   
-  ];
+
+const [users , setUsers] = useState([]);
+  const fetchAllEmployees = async () => { 
+    try{
+      const response = await axios.get('http://localhost:4005/user/all')
+
+      if(response.data && Array.isArray(response.data.users)){
+        setUsers(response.data.users)
+      }else {
+        throw new Error("Unexpected response structure")
+      }
+
+
+    }catch(error){
+      console.error('Error fetching employees:', error);
+      message.error('Failed to load employees. Please try again later.'); 
+    }
+  };
+  useEffect(() => {
+    fetchAllEmployees()
+  } , []);
 
   
   const columns = [
@@ -49,8 +51,8 @@ const ListEmployees = () => {
     },
     {
       title: 'Department',
-      dataIndex: 'department',
-      key: 'department',
+      dataIndex: 'departmentId',
+      key: 'departmentId',
     },
     {
       title: 'Hire Date',
@@ -58,17 +60,21 @@ const ListEmployees = () => {
       key: 'hireDate',
     },
     {
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address',
+    },
+    {
+      title: 'Salary',
+      dataIndex: 'salary',
+      key: 'salary',
+    },
+    {
         title: 'Action',
         key: 'action',
         render: (text, record) => (
           <Space size="middle">
-         
-            <Button
-              icon={<EditOutlined />}
-            
-            >
-              Edit
-            </Button>
+
   
            
             <Popconfirm
@@ -108,7 +114,7 @@ const ListEmployees = () => {
 >
   <Link to="/employee/add" style={{ 
     color: 'white', 
-    textDecoration: 'none' // Remove underline from the link
+    textDecoration: 'none' 
   }}>
     Add Employee
   </Link>
@@ -118,7 +124,7 @@ const ListEmployees = () => {
           
           <Table 
             columns={columns} 
-            dataSource={employeesData} 
+            dataSource={users.map(user => ({ ...user, key: user.id }))} 
             pagination={{ pageSize: 5 }} 
             rowKey="key"
           />
