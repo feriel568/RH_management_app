@@ -2,8 +2,44 @@ const User = require('../models/user')
 const Department = require('../models/department')
 const bcrypt = require('bcryptjs'); 
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 
 const JWT_SECRET = process.env.JWT_SECRET 
+
+function sendVerificationEmail(email,name , password) {
+  const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+          user: process.env.EMAIL_ADDRESS,
+          pass: process.env.EMAIL_PASSWORD
+      },
+      
+     
+  });
+
+  const mailOptions = {
+      from: process.env.EMAIL_ADDRESS,
+      to: email,
+      subject: 'Welcome to HRManage',
+      text: `Hello ${name} .
+      Welcome to HRManage! Your account has been successfully created. 
+      Here are your account details: 
+      Email: ${email}
+      Password: ${password}`
+      
+
+              
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+          console.error('Error sending verification email:', error);
+      } else {
+          console.log('Verification email sent:', info.response);
+      }
+  });
+};
+
 const registerUser = async (req, res) => {
     try {
       const { name, email, role,phone,address, hireDate, salary, jobTitle,password,departmentId } = req.body;
@@ -12,6 +48,7 @@ const registerUser = async (req, res) => {
       if (!department) {
         return res.status(404).json({ message: 'Department not found' });
       }
+      const plainTextPassword = password;
 
       const hashedPassword = await bcrypt.hash(password, 10);
   
@@ -30,6 +67,9 @@ const registerUser = async (req, res) => {
       const token = jwt.sign({ id: newUser.id, email: newUser.email }, JWT_SECRET, {
         expiresIn: '1h', // Token expires in 1 hour
       });
+      sendVerificationEmail(newUser.email, newUser.name, plainTextPassword);
+
+
       res.status(201).json({
         message: 'User created successfully!',
         user: newUser,
