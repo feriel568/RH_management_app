@@ -25,12 +25,25 @@ const getNotifications = async (req , res) => {
     }
 }
 
-
+const readNotifications = async (req , res) => {
+    const { id } = req.params;
+    try {
+      const notification = await req.Notification.findByPk(id);
+      if (!notification) return res.status(404).json({ error: 'Notification non trouvée' });
+      
+      notification.isRead = true;
+      await notification.save();
+      res.status(200).json(notification);
+    } catch (error) {
+      res.status(500).json({ error: 'Erreur lors de la mise à jour de la notification' });
+    }
+}
 
 
 
 
 module.exports = 
 {createNotification,
-    getNotifications
+    getNotifications,
+    readNotifications
 };
