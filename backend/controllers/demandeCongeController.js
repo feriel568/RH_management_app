@@ -47,6 +47,17 @@ exports.updateDemandeConge = async (req, res) => {
         const demandeConge = await DemandeConge.findByPk(req.params.id);
         if (demandeConge) {
             await demandeConge.update(req.body);
+            const { statut } = req.body;
+            if (['approved', 'rejected'].includes(statut)) {
+                const userId = demandeConge.userId; // Assuming you have a userId field in DemandeConge
+    console.log(demandeConge.statut); 
+                // Create a notification
+                await req.Notification.create({
+                    title: `Demande de congé`,
+                    message: `Votre demande de congé a été ${demandeConge.statut}.`,
+                    userId: userId
+                });
+            }
             res.status(200).json(demandeConge);
         } else {
             res.status(404).json({ message: 'Demande not found' });
