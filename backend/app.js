@@ -24,12 +24,14 @@ const defineUserModel = require('./models/user');
 const defineDemandeCongeModel = require('./models/Demandeconge');
 const defineTimeSheetModel = require('./models/timeSheet'); 
 const defineReportModel=require('./models/report');
+const defineNotificationModel=require('./models/notification');
+
 const Department = defineDepartmentModel(sequelize);
 const User = defineUserModel(sequelize);
 const DemandeConge = defineDemandeCongeModel(sequelize);
 const TimeSheet = defineTimeSheetModel(sequelize, User);
-
 const report=defineReportModel(sequelize);
+const Notification = defineNotificationModel(sequelize);
 // Define relationships
 Department.hasMany(User, { as: 'users', foreignKey: 'departmentId' });
 User.belongsTo(Department, { as: 'department', foreignKey: 'departmentId' });
@@ -39,6 +41,7 @@ TimeSheet.belongsTo(User, { as: 'user', foreignKey: 'userId' , onDelete: 'CASCAD
 
 User.hasMany(report,{as:'reports',foreignKey:'userId' });
 report.belongsTo(User,{as:'User',foreignKey:'userId'});
+Notification.belongsTo(User , { as: 'User', foreignKey : 'userId'})
 
 
 // Sync the database
