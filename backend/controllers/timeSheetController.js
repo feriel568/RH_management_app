@@ -85,12 +85,18 @@ const getAllTimeSheets = async (req, res) => {
       // Update the status
       timeSheet.status = status;
       await timeSheet.save();
+      const notification = await req.Notification.create({
+        title: `Timesheet ${status}`,
+        message: `Your timesheet #${timesheetId} created at ${timeSheet.createdAt} has been ${status}.`,
+        userId: timeSheet.userId
+      });
   
       res.status(200).json({ message: `Timesheet ${status} successfully`, timeSheet });
     } catch (error) {
       console.error('Error updating timesheet status:', error);
       res.status(500).json({ message: 'Error updating timesheet status', error });
     }
+  
   };
   
   module.exports = {

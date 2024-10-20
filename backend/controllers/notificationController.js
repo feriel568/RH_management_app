@@ -16,8 +16,15 @@ const getNotifications = async (req , res) => {
     const {userId} = req.params;
 
     try{
-        const notifications = await req.Notification.findAll({ where: { userId } });
+        const notifications = await req.Notification.findAll({ where: { userId , isRead : false} });
+
+        await req.Notification.update(
+            { isRead: true },
+            { where: { userId, isRead: false } }
+          );
         res.status(200).json(notifications);
+
+
 
     }catch(err){
     res.status(500).json({ error: 'Erreur lors de la récupération des notifications' });
