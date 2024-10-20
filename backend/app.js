@@ -59,6 +59,7 @@ app.use((req, res, next) => {
 
   req.DemandeConge = DemandeConge; // If you're using this model as well
   req.report=report;
+  req.Notification = Notification;
   next();
 });
 
@@ -73,6 +74,8 @@ const timeSheetRoutes = require('./routes/timeSheetRoutes');
 
 
 const reportRoutes = require('./routes/reportRoute');
+const notificationRoutes = require('./routes/notificationRouter');
+
 
 
 // Use routes
@@ -84,6 +87,7 @@ app.use('/timeSheet', timeSheetRoutes);
 
 
 app.use('/report', reportRoutes);
+app.use('/notification', notificationRoutes);
 // Start server
 app.listen(process.env.PORT, () => {
   console.log('Server is listening on port ' + process.env.PORT);
