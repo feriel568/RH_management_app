@@ -1,64 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { notification } from 'antd'; 
-import axios from 'axios';
-import '../styles/Navbar.css'; 
-import "antd/dist/reset.css";
+import "antd/dist/reset.css"; // Ant Design v5 CSS reset
+import '../styles/sideBarAdmin.css'
+import { Layout, Menu } from "antd";
 
-const Navbar = () => {
-  const navigate = useNavigate();
-  const [userId, setUserId] = useState(null);
+import SideBarEmployee from "../components/SideBarEmployee"
 
-  useEffect(() => {
-    // Fetch userId from localStorage (assuming it's stored after login)
-    const storedUserId = localStorage.getItem('userId');
-    if (storedUserId) {
-      setUserId(storedUserId);
-      fetchNotifications(storedUserId); // Fetch notifications when userId is available
-    }
-  }, []);
+const { Sider, Content } = Layout;
+const DashEmployee = () => {
 
-  const fetchNotifications = async () => {
-    try {
-      const userId = localStorage.getItem('userId');
+ return (
 
-      const response = await axios.get(`http://localhost:4005/notification/${userId}`);
-      response.data.forEach((notif) => {
-        // Display each notification using Ant Design's notification component
-        notification.open({
-          message: notif.title,
-          description: notif.message,
-          placement: 'topRight',
-          duration: 5, // The notification will last 5 seconds
-        });
-      });
-    } catch (error) {
-      console.error('Error fetching notifications:', error);
-    }
+
+    <div class="container" style={containerFlex}>
+    <div class="sidebar">
+        <SideBarEmployee />
+        </div>    
+        
+        <Layout className="site-layout">
+        <Content style={contentStyle}>
+          <h2 style={{ color: "#2B2D42" }}>Welcome to the employee Dashboard</h2>
+          <p style={{ color: "#8D99AE" }}>
+            Manage your employees, teams, reports, and more.
+          </p>
+        </Content>
+      </Layout>
+       
+    </div>
+        
+ )
+}
+
+
+const contentStyle = {
+    margin: "24px 16px",
+    padding: 24,
+    backgroundColor: "#EDF2F4", // Light background for content area
+    borderRadius: "10px", // Rounded content area
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Subtle shadow for content
   };
+  
 
-  const handleLogout = () => {
-    // Clear the authentication token or any user-related data from localStorage
-    localStorage.removeItem('token');
-    localStorage.removeItem('userId'); // Clear userId if stored
-
-    // Redirect to the login page
-    navigate('/'); 
+const containerFlex = {
+    display : "flex"
   };
-
-  return (
-    <nav className="navbar">
-      <div className="navbar-logo">Employee Dashboard</div>
-      <ul className="navbar-links">
-        <li><a href="/conge">Demande congé</a></li>
-        <li><a href="/resultaconge">Resultat congé</a></li>
-        <li><a href="/profile">Profile</a></li>
-        <li><a href="/requests">Requests</a></li>
-        <li><a href="/timesheet/create">TimeSheet</a></li>
-        <li><button onClick={handleLogout}>Logout</button></li>
-      </ul>
-    </nav>
-  );
-};
-
-export default Navbar;
+  
+export default DashEmployee
