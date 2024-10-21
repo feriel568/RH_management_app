@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Select, Table, Space, message } from 'antd';
+import { Form, Input, Button, Select, Table, Space, message , Layout} from 'antd';
 import axios from 'axios';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-
+import SideBarEmployee from '../components/SideBarEmployee';
 const { Option } = Select;
-
+const { Sider, Content } = Layout;
 const CreateTimeSheet = () => {
   const [workDays, setWorkDays] = useState([]);
   const [totalHours, setTotalHours] = useState(0);
@@ -113,87 +113,101 @@ const CreateTimeSheet = () => {
   ];
 
   return (
-    <div style={containerStyle}>
-      <Form
-        layout="vertical"
-        name="create-timesheet"
-        onFinish={onFinish}
-        initialValues={{ remember: true }}
-        style={formStyle}
-      >
-        {workDays.map((workDay, index) => (
-          <Space key={index} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
-            <Form.Item label="Day" required>
-              <Select
-                placeholder="Select day"
-                value={workDay.day}
-                onChange={(value) => handleInputChange(index, 'day', value)}
-                style={{ width: 160 }}
-              >
-                <Option value="Monday">Monday</Option>
-                <Option value="Tuesday">Tuesday</Option>
-                <Option value="Wednesday">Wednesday</Option>
-                <Option value="Thursday">Thursday</Option>
-                <Option value="Friday">Friday</Option>
-                <Option value="Saturday">Saturday</Option>
-                <Option value="Sunday">Sunday</Option>
-              </Select>
+    <div style={containerFlex}>
+      <div className="sidebar">
+        <SideBarEmployee />
+      </div>
+      <Layout className="site-layout">
+        <Content style={contentStyle}>
+          <Form
+            layout="vertical"
+            name="create-timesheet"
+            onFinish={onFinish}
+            initialValues={{ remember: true }}
+            style={formStyle}
+          >
+            {workDays.map((workDay, index) => (
+              <Space key={index} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                <Form.Item label="Day" required>
+                  <Select
+                    placeholder="Select day"
+                    value={workDay.day}
+                    onChange={(value) => handleInputChange(index, 'day', value)}
+                    style={{ width: 160 }}
+                  >
+                    <Option value="Monday">Monday</Option>
+                    <Option value="Tuesday">Tuesday</Option>
+                    <Option value="Wednesday">Wednesday</Option>
+                    <Option value="Thursday">Thursday</Option>
+                    <Option value="Friday">Friday</Option>
+                    <Option value="Saturday">Saturday</Option>
+                    <Option value="Sunday">Sunday</Option>
+                  </Select>
+                </Form.Item>
+
+                <Form.Item label="Hours" required>
+                  <Input
+                    placeholder="Hours"
+                    value={workDay.hours}
+                    onChange={(e) => handleInputChange(index, 'hours', e.target.value)}
+                    type="number"
+                    min={0}
+                    style={{ width: 100 }}
+                  />
+                </Form.Item>
+
+                <MinusCircleOutlined onClick={() => handleRemoveDay(index)} style={{ color: 'red' }} />
+              </Space>
+            ))}
+
+            <Form.Item>
+              <Button type="dashed" onClick={handleAddDay} icon={<PlusOutlined />}>
+                Add Day
+              </Button>
             </Form.Item>
 
-            <Form.Item label="Hours" required>
-              <Input
-                placeholder="Hours"
-                value={workDay.hours}
-                onChange={(e) => handleInputChange(index, 'hours', e.target.value)}
-                type="number"
-                min={0}
-                style={{ width: 100 }}
-              />
+            <div style={{ marginBottom: '20px', fontWeight: 'bold' }}>
+              Total Hours: {totalHours}
+            </div>
+
+            <Form.Item>
+              <Button type="primary" htmlType="submit" loading={loading}>
+                Create Timesheet
+              </Button>
             </Form.Item>
+          </Form>
 
-            <MinusCircleOutlined onClick={() => handleRemoveDay(index)} style={{ color: 'red' }} />
-          </Space>
-        ))}
-
-        <Form.Item>
-          <Button type="dashed" onClick={handleAddDay} icon={<PlusOutlined />}>
-            Add Day
-          </Button>
-        </Form.Item>
-
-        <div style={{ marginBottom: '20px', fontWeight: 'bold' }}>
-          Total Hours: {totalHours}
-        </div>
-
-        <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading}>
-            Create Timesheet
-          </Button>
-        </Form.Item>
-      </Form>
-
-      <h2>User Timesheets</h2>
-      <Table
-        columns={columns}
-        dataSource={timeSheets} // Use fetched timesheets as the data source
-        pagination={{ pageSize: 5 }}
-        rowKey="key"
-      />
+          <h2>User Timesheets</h2>
+          <Table
+            columns={columns}
+            dataSource={timeSheets} // Use fetched timesheets as the data source
+            pagination={{ pageSize: 5 }}
+            rowKey="key"
+          />
+        </Content>
+      </Layout>
     </div>
   );
 };
 
-const containerStyle = {
-  margin: '24px 16px',
-  padding: '24px',
-  backgroundColor: '#EDF2F4', // Use previous colors
-  borderRadius: '10px',
-  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+const containerFlex = {
+  display: "flex",
+};
+
+
+
+const contentStyle = {
+  margin: "24px 16px",
+  padding: 24,
+  backgroundColor: "#EDF2F4",
+  borderRadius: "10px",
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
 };
 
 const formStyle = {
   maxWidth: '600px',
-  margin: '0 auto',
+  margin: '20px',
 };
+
 
 export default CreateTimeSheet;
