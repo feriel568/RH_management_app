@@ -1,6 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import '../styles/conge.css'; // Optional: your CSS for styling
+import { Table, message , Layout } from 'antd';
+import SideBarEmployee from '../components/SideBarEmployee';
+const { Content } = Layout;
 
 class Resultatconge extends React.Component {
   constructor(props) {
@@ -13,16 +16,23 @@ class Resultatconge extends React.Component {
   }
 
   componentDidMount() {
-    // Retrieve the userId from localStorage
+   
     const userId = localStorage.getItem('userId');
     if (userId) {
       // Fetch demandes by userId
       axios
         .get(`http://localhost:4005/demandeconge/${userId}`)
         .then((response) => {
+          const demandesWithFormattedDates = response.data.map(demande => ({
+            ...demande,
+            datedebut: new Date(demande.datedebut).toISOString().split('T')[0], // Extract only the date
+            datefin: new Date(demande.datefin).toISOString().split('T')[0],     // Extract only the date
+            datedemande: new Date(demande.datedemande).toISOString().split('T')[0], // Extract only the date
+          }));
+          
           this.setState({
-            demandes: response.data,
-            loading: false, // Data successfully fetched, stop loading
+            demandes: demandesWithFormattedDates,
+            loading: false, 
           });
         })
         .catch((error) => {
@@ -38,48 +48,75 @@ class Resultatconge extends React.Component {
       });
     }
   }
+  
+
 
   render() {
     const { demandes, loading, error } = this.state;
-
+    const contentStyle = {
+      margin: "24px 16px",
+      padding: 24,
+      backgroundColor: "#EDF2F4",
+      borderRadius: "10px",
+      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    };
+    
+    const containerFlex = {
+      display: "flex"
+    };
+    const columns = [
+      {
+        title: 'Date Début',
+        dataIndex: 'datedebut',
+        key: 'datedebut',
+      },
+      {
+        title: 'Date Fin',
+        dataIndex: 'datefin',
+        key: 'datefin',
+      },
+      {
+        title: 'Type de Congé',
+        dataIndex: 'typeconge',
+        key: 'typeconge',
+      },
+      {
+        title: 'Statut',
+        dataIndex: 'statut',
+        key: 'statut',
+      },
+      {
+        title: 'Motif',
+        dataIndex: 'motif',
+        key: 'motif',
+      },
+      {
+        title: 'Date de Demande',
+        dataIndex: 'datedemande',
+        key: 'datedemande',
+      },
+    ];
     return (
-      <div className="conge-result-container">
-        <h2>Résultats de vos demandes de congé</h2>
-        {loading ? (
-          <p>Loading...</p>
-        ) : error ? (
-          <p className="error">{error}</p>
-        ) : demandes.length > 0 ? (
-          <table className="conge-table">
-            <thead>
-              <tr>
-                <th>Date Début</th>
-                <th>Date Fin</th>
-                <th>Type de Congé</th>
-                <th>Statut</th>
-                <th>Motif</th>
-                <th>Date de Demande</th>
-              </tr>
-            </thead>
-            <tbody>
-              {demandes.map((demande, index) => (
-                <tr key={index}>
-                  <td>{demande.datedebut}</td>
-                  <td>{demande.datefin}</td>
-                  <td>{demande.typeconge}</td>
-                  <td>{demande.statut}</td>
-                  <td>{demande.motif}</td>
-                  <td>{demande.datedemande}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p>No demandes found.</p>
-        )}
+      <div className="container" style={containerFlex}>
+      <div className="sidebar">
+        <SideBarEmployee />
       </div>
-    );
-  }
+
+      <Layout className="site-layout">
+        <Content style={contentStyle}>
+          <Table
+            columns={columns}
+            dataSource={demandes} // Set data source to the fetched timesheets
+            pagination={{ pageSize: 5 }}
+            rowKey="key"
+          />
+        </Content>
+      </Layout>
+    </div>
+  );
+};
+
+  
 }
 
 export default Resultatconge;
