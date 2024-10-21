@@ -64,7 +64,9 @@ function SideBarEmployee() {
           <Menu.Item key="4" icon={<UserOutlined />} style={menuItemStyle}>
             <NavLink to="/timesheet/create">TimeSheet</NavLink>
           </Menu.Item>
-
+          <Menu.Item key="4" icon={<UserOutlined />} style={menuItemStyle}>
+            <NavLink to="/Evaluationemployeebyid">Evaluation</NavLink>
+          </Menu.Item>
          
 
         
