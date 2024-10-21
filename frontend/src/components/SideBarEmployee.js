@@ -50,15 +50,18 @@ function SideBarEmployee() {
             border: "none",
           }}
         >
-          <Menu.Item key="1" icon={<PieChartOutlined />} style={menuItemStyle}>
+           <Menu.Item key="1" icon={<PieChartOutlined />} style={menuItemStyle}>
+            <NavLink to="/employeedashbord">Dashboard</NavLink>
+          </Menu.Item>
+          <Menu.Item key="2" icon={<PieChartOutlined />} style={menuItemStyle}>
             <NavLink to="/conge">Holidays</NavLink>
           </Menu.Item>
 
-          <Menu.Item key="2" icon={<ApartmentOutlined />} style={menuItemStyle}>
+          <Menu.Item key="3" icon={<ApartmentOutlined />} style={menuItemStyle}>
             <NavLink to="/resultaconge">result holidays</NavLink>
           </Menu.Item>
 
-          <Menu.Item key="3" icon={<UserOutlined />} style={menuItemStyle}>
+          <Menu.Item key="4" icon={<UserOutlined />} style={menuItemStyle}>
             <NavLink to="/timesheet/create">TimeSheet</NavLink>
           </Menu.Item>
 
@@ -68,7 +71,7 @@ function SideBarEmployee() {
 
           {/* Logout Menu Item */}
           <Menu.Item
-            key="7"
+            key="5"
             icon={<LogoutOutlined />}
             style={menuItemStyle}
             onClick={handleLogout} // Handle logout on click
