@@ -75,6 +75,11 @@ function SideBarAdmin() {
           </Menu.Item>
           <Menu.Item key="6" icon={<FileOutlined />} style={menuItemStyle}>
           <NavLink to="/timesheets">Timesheets</NavLink>
+          
+          </Menu.Item>
+          <Menu.Item key="8" icon={<FileOutlined />} style={menuItemStyle}>
+          <NavLink to="/evaluation">Evaluation</NavLink>
+          
           </Menu.Item>
 
           {/* Logout Menu Item */}

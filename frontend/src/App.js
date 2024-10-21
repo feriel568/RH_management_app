@@ -15,6 +15,7 @@ import CreateTimeSheet from './pages/CreateTimeSheet';
 import Addreports from './pages/Addreports';
 import Listreports from './pages/Listreports';
 import Updatereports from './pages/Updatereports';
+import Evaluation from './pages/Evaluation';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path="/addreports" element={<Addreports />} />
         <Route path="/listReports" element={<Listreports />} />
         <Route path="/updatee/:id" element={<Updatereports />} /> {/* Corrected here */}
+        <Route path="/evaluation" element={<Evaluation />} />
         
       </Routes>
     </Router>
