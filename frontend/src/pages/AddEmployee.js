@@ -115,13 +115,20 @@ const AddEmployee = () => {
                                 rules={[{ required: true, message: 'Please enter your department' }]}
                             >
                                 {/* <Input placeholder="Enter your department ID" /> */}
-                                <Select placeholder="Select your department">
-                                        {departments.map((department) => (
-                                    <Option key={department.id} value={department.id}>
-                                        {department.name}
-                                    </Option>
-                                    ))}
-                                </Select>
+                                <Select
+    showSearch
+    placeholder="Select your department"
+    optionFilterProp="children"
+    filterOption={(input, option) =>
+      option.children.toLowerCase().includes(input.toLowerCase())
+    }
+  >
+    {departments.map((department) => (
+      <Option key={department.id} value={department.id}>
+        {department.name}
+      </Option>
+    ))}
+  </Select>
                             </Form.Item>
 
                             <Form.Item>
