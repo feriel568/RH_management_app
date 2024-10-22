@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useEffect , useState} from "react";
 import "antd/dist/reset.css"; 
 import '../styles/sideBarAdmin.css';
 import { Layout, Form, Input, Button, Select, DatePicker, message } from "antd";
@@ -10,6 +10,7 @@ const { Option } = Select;
 
 const AddEmployee = () => {
     const [form] = Form.useForm();
+    const [departments , setDepartments] = useState([])
 
     const onFinish = async (values) => {
         try {
@@ -21,6 +22,18 @@ const AddEmployee = () => {
             console.error('Error:', error);
         }
     };
+
+    useEffect(()=> {
+        const fetchDepartments = async () =>{
+            try {
+                const response = await axios.get("http://localhost:4005/department/all")
+                setDepartments(response.data.departments)
+            } catch (error) {
+                message.error('Failed to fetch departments')
+            }
+        }
+        fetchDepartments();
+    },[])
 
     return (
         <div class="container" style={containerFlex}>
@@ -99,9 +112,16 @@ const AddEmployee = () => {
                             <Form.Item
                                 name="departmentId"
                                 label="Department"
-                                rules={[{ required: true, message: 'Please enter your department ID' }]}
+                                rules={[{ required: true, message: 'Please enter your department' }]}
                             >
-                                <Input placeholder="Enter your department ID" />
+                                {/* <Input placeholder="Enter your department ID" /> */}
+                                <Select placeholder="Select your department">
+                                        {departments.map((department) => (
+                                    <Option key={department.id} value={department.id}>
+                                        {department.name}
+                                    </Option>
+                                    ))}
+                                </Select>
                             </Form.Item>
 
                             <Form.Item>
