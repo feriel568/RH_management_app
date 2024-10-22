@@ -88,7 +88,7 @@ const [departments, setDepartments] = useState([]);
   
            
             <Popconfirm
-  title="Are you sure to delete this department?"
+  title="Are you sure to delete this user?"
   okText="Yes"
   cancelText="No"
   onConfirm={() => handleDelete(record.id)} 
