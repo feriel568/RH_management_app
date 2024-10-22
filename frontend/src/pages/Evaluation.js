@@ -3,6 +3,7 @@ import React from 'react';
 import { Layout, Form, Input, Button, message } from 'antd';
 import SideBarEmployee from '../components/SideBarEmployee';
 import '../styles/conge.css';
+import SideBarAdmin from '../components/SideBarAdmin';
 
 const { Content } = Layout;
 
@@ -104,7 +105,7 @@ class Evaluation extends React.Component {
     return (
       <div className="container" style={containerFlex}>
         <div className="sidebar">
-          <SideBarEmployee />
+          <SideBarAdmin />
         </div>
 
         <Layout className="site-layout">
