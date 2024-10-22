@@ -12,6 +12,8 @@ const { Content } = Layout;
 const ListEmployees = () => {
 
 const [users , setUsers] = useState([]);
+const [departments, setDepartments] = useState([]);
+
   const fetchAllEmployees = async () => { 
     try{
       const response = await axios.get('http://localhost:4005/user/all')
@@ -32,7 +34,11 @@ const [users , setUsers] = useState([]);
     fetchAllEmployees()
   } , []);
 
-  
+  useEffect(() => {
+    axios.get('http://localhost:4005/department/all')
+      .then(response => setDepartments(response.data.departments))
+      .catch(error => console.error('Error fetching departments:', error));
+  }, []);
   const columns = [
     {
       title: 'Name',
@@ -51,8 +57,12 @@ const [users , setUsers] = useState([]);
     },
     {
       title: 'Department',
-      dataIndex: 'departmentId',
+     // dataIndex: 'departmentId',
       key: 'departmentId',
+      render: (text, record) => {
+        const department = departments.find(dep => dep.id === record.departmentId);
+        return department ? department.name : 'N/A'; // Display 'N/A' if no matching department
+      },
     },
     {
       title: 'Hire Date',
