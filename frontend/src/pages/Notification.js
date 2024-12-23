@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { notification } from 'antd'; // Import notification from Ant Design
-import 'antd/dist/antd.css'; // Import Ant Design styles
+import { notification } from 'antd';
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
+  
+  // Retrieve userId from localStorage once
+  const userId = localStorage.getItem('userId');
 
   // Function to open the Ant Design notification
   const openNotification = (title, message) => {
@@ -18,17 +20,20 @@ const Notifications = () => {
 
   useEffect(() => {
     const fetchNotifications = async () => {
-        const userId = localStorage.getItem('id');
-      try {
-        const response = await axios.get(`http://localhost:4005/notification${userId}`);
-        setNotifications(response.data);
+      if (userId) {  // Ensure userId is available
+        try {
+          const response = await axios.get(`http://localhost:4005/notification${userId}`);
+          setNotifications(response.data);
 
-        // Trigger a notification for each new notification fetched
-        response.data.forEach((notif) => {
-          openNotification(notif.title, notif.message);
-        });
-      } catch (error) {
-        console.error('Error fetching notifications:', error);
+          // Trigger a notification for each new notification fetched
+          response.data.forEach((notif) => {
+            openNotification(notif.title, notif.message);
+          });
+        } catch (error) {
+          console.error('Error fetching notifications:', error);
+        }
+      } else {
+        console.warn('User ID not found in localStorage');
       }
     };
 

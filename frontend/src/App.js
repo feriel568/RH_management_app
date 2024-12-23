@@ -17,9 +17,11 @@ import Listreports from './pages/Listreports';
 import Updatereports from './pages/Updatereports';
 import Evaluation from './pages/Evaluation';
 import Evaluationbyid from './pages/Evaluationbyid';
+import Notifications from './pages/Notification';
 
 function App() {
   return (
+    
     <Router>
       <Routes>
         <Route path="/" element={<LoginForm />} />
@@ -40,6 +42,7 @@ function App() {
         <Route path="/updatee/:id" element={<Updatereports />} /> {/* Corrected here */}
         <Route path="/evaluation" element={<Evaluation />} /> 
         <Route path="/Evaluationemployeebyid" element={<Evaluationbyid />} />
+        {/* <Notifications /> */}
         
       </Routes>
     </Router>

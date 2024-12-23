@@ -1,30 +1,32 @@
 import React, { useState } from "react";
 import { Form, Input, Button, message } from "antd";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Assuming you're using react-router for navigation
-import "antd/dist/reset.css"; 
-import "../styles/loginForm.css"; 
-
+import { useNavigate } from "react-router-dom";
+import "antd/dist/reset.css";
+import "../styles/loginForm.css";
 import TopBar from "./TopBar";
+import Notifications from "../pages/Notification"; // Import the Notifications component
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // React Router's useNavigate hook for redirection
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
+  const navigate = useNavigate();
 
   const handleLogin = async (values) => {
     try {
-      // Send login request to the server
       const response = await axios.post("http://localhost:4005/user/login", {
         email: values.email,
         password: values.password,
       });
 
-      const { id, role, token } = response.data.user; // Récupérer l'id en plus du rôle et du token
+      const { id, role, token } = response.data.user;
 
-      // Save the id and token in localStorage or sessionStorage
-      localStorage.setItem("userId", id);  // Stocker l'ID utilisateur
-      localStorage.setItem("token", token); // Stocker le token
+      localStorage.setItem("userId", id);
+      localStorage.setItem("token", token);
+
+      // Set the logged-in state to true
+      setIsLoggedIn(true);
 
       // Role-based redirection
       if (role === "HRAdmin") {
@@ -50,7 +52,7 @@ const LoginForm = () => {
         <Form
           name="login"
           layout="vertical"
-          onFinish={handleLogin} // Trigger the login logic when the form is submitted
+          onFinish={handleLogin}
           style={{ maxWidth: "300px", margin: "0 auto" }}
         >
           <Form.Item
@@ -79,6 +81,9 @@ const LoginForm = () => {
           </Form.Item>
         </Form>
       </div>
+
+      {/* Conditionally render Notifications component if logged in */}
+      {isLoggedIn && <Notifications />}
     </div>
   );
 };

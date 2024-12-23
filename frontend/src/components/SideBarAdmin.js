@@ -77,14 +77,14 @@ function SideBarAdmin() {
           <NavLink to="/timesheets">Timesheets</NavLink>
           
           </Menu.Item>
-          <Menu.Item key="8" icon={<FileOutlined />} style={menuItemStyle}>
+          <Menu.Item key="7" icon={<FileOutlined />} style={menuItemStyle}>
           <NavLink to="/evaluation">Evaluation</NavLink>
           
           </Menu.Item>
 
           {/* Logout Menu Item */}
           <Menu.Item
-            key="7"
+            key="8"
             icon={<LogoutOutlined />}
             style={menuItemStyle}
             onClick={handleLogout} // Handle logout on click

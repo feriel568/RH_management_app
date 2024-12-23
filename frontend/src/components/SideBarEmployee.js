@@ -64,7 +64,7 @@ function SideBarEmployee() {
           <Menu.Item key="4" icon={<UserOutlined />} style={menuItemStyle}>
             <NavLink to="/timesheet/create">TimeSheet</NavLink>
           </Menu.Item>
-          <Menu.Item key="4" icon={<UserOutlined />} style={menuItemStyle}>
+          <Menu.Item key="5" icon={<UserOutlined />} style={menuItemStyle}>
             <NavLink to="/Evaluationemployeebyid">Evaluation</NavLink>
           </Menu.Item>
          
@@ -73,7 +73,7 @@ function SideBarEmployee() {
 
           {/* Logout Menu Item */}
           <Menu.Item
-            key="5"
+            key="6"
             icon={<LogoutOutlined />}
             style={menuItemStyle}
             onClick={handleLogout} // Handle logout on click

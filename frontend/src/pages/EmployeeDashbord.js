@@ -10,8 +10,8 @@ const DashEmployee = () => {
  return (
 
 
-    <div class="container" style={containerFlex}>
-    <div class="sidebar">
+    <div className="container" style={containerFlex}>
+    <div className="sidebar">
         <SideBarEmployee />
         </div>    
         
